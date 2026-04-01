@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Short-Circuit: Blitz Deluxe</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+  <canvas id="particles" class="bg-particles"></canvas>
+
+  <div id="app-layout">
+    <aside id="ranking-sidebar">
+      <div class="sidebar-card poki-card">
+        <div class="sidebar-header">
+          <div>
+            <div class="sidebar-kicker">GLOBAL</div>
+            <h2 id="sidebar-ranking-title">🏆 Ranking</h2>
+          </div>
+
+          <button class="ghost-btn sidebar-refresh-btn" id="btn-refresh-ranking-sidebar">
+            Atualizar
+          </button>
+        </div>
+
+        <div id="ranking-list-sidebar" class="ranking-list ranking-list-sidebar"></div>
+      </div>
+    </aside>
+
+    <div id="app">
+      <div id="main-wrapper">
+        <div class="topbar">
+          <div class="brand-area">
+            <div class="brand">
+              <div class="brand-badge spin-soft">⚡</div>
+              <div class="brand-text">
+                <div class="brand-kicker" id="brand-kicker">Neon Puzzle Grid</div>
+                <div class="brand-title">Short-Circuit: Blitz Deluxe</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="lang-selector">
+            <button class="lang-btn active" data-lang="pt">PT</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="es">ES</button>
+          </div>
+        </div>
+
+        <div id="start-overlay" class="fade-in">
+          <section class="hero poki-hero">
+            <div class="hero-floating hero-floating-a">⚡</div>
+            <div class="hero-floating hero-floating-b">💡</div>
+
+            <h1 class="game-title">
+              <span class="title-accent" id="start-title">CURTO-CIRCUITO</span>
+              <span id="start-subtitle">BLITZ</span>
+            </h1>
+
+            <div class="hero-sub">
+              <span class="pill" id="pill-fast">⚡ Rápido</span>
+              <span class="pill" id="pill-smart">🧠 Estratégico</span>
+              <span class="pill" id="pill-neon">💡 Neon Puzzle</span>
+            </div>
+
+            <p class="game-desc" id="start-desc">
+              O sistema está superaquecendo! Gire as peças para ligar a bateria ⚡ até a lâmpada 💡 antes do tempo acabar.
+            </p>
+
+            <div class="start-actions">
+              <button class="main-btn pulse-big" id="btn-start">Jogar sem login</button>
+              <button class="ghost-btn" id="btn-open-login">Entrar</button>
+              <button class="ghost-btn" id="btn-open-signup">Criar conta</button>
+              <button class="ghost-btn" id="btn-how">Como jogar</button>
+            </div>
+
+            <div class="user-chip" id="user-chip">Visitante</div>
+          </section>
+
+          <section class="hud">
+            <div class="stats-grid">
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="label-best">Melhor</div>
+                <div class="stat-value" id="best-score">0</div>
+              </div>
+
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="label-max-level">Recorde</div>
+                <div class="stat-value" id="best-level">1</div>
+              </div>
+
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="label-mode">Modo</div>
+                <div class="stat-value" id="mode-label">Blitz</div>
+              </div>
+
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="label-grid">Grade</div>
+                <div class="stat-value" id="grid-preview">3x3</div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div id="game-ui-group">
+          <div class="hud">
+            <div class="stats-grid">
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="hud-level-title">Nível</div>
+                <div class="stat-value" id="label-level">1</div>
+              </div>
+
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="hud-time-title">Tempo</div>
+                <div class="stat-value" id="label-time">0.0s</div>
+              </div>
+
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="hud-score-title">Pontos</div>
+                <div class="stat-value" id="label-score">0</div>
+              </div>
+
+              <div class="stat-card stat-arcade">
+                <div class="stat-label" id="hud-rotations-title">Giros</div>
+                <div class="stat-value" id="label-rotations">0</div>
+              </div>
+            </div>
+
+            <div class="progress-shell">
+              <div id="timer-bar"></div>
+            </div>
+
+            <div class="hud-actions">
+              <button class="ghost-btn" id="btn-reset">Reiniciar fase</button>
+              <button class="ghost-btn" id="btn-sound">Som: ON</button>
+              <button class="ghost-btn" id="btn-back-home">Início</button>
+              <button class="ghost-btn" id="btn-logout">Sair</button>
+            </div>
+          </div>
+
+          <div class="stage poki-stage">
+            <div class="canvas-shell">
+              <canvas id="gameCanvas" width="560" height="560"></canvas>
+
+              <div id="win-overlay" class="overlay">
+                <div class="overlay-card fade-in">
+                  <h2 class="success" id="msg-win">SISTEMA ONLINE!</h2>
+                  <p id="msg-win-sub">Ligação concluída. A rede voltou a operar.</p>
+                  <div class="overlay-actions mt-16">
+                    <button class="main-btn" id="btn-next">Próximo Nível</button>
+                  </div>
+                </div>
+              </div>
+
+              <div id="loss-overlay" class="overlay">
+                <div class="overlay-card fade-in">
+                  <h2 class="danger" id="msg-loss">CURTO-CIRCUITO!</h2>
+                  <p id="msg-restart">O tempo acabou. Tente novamente esta fase.</p>
+                  <div class="overlay-actions mt-16">
+                    <button class="main-btn" id="btn-retry">Tentar de novo</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-tip">
+              <span class="tip-chip" id="tip-text">Dica: comece montando o caminho principal.</span>
+              <span class="tip-chip live-chip" id="status-text">Sistema aguardando inicialização</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="help-overlay" class="overlay global-overlay">
+          <div class="overlay-card fade-in">
+            <h2 id="msg-help-title">Como jogar</h2>
+            <p id="msg-help-text">
+              Clique ou toque nas peças para girar. Conecte a bateria ⚡ até a lâmpada 💡 antes do cronômetro zerar.
+            </p>
+            <div class="overlay-actions mt-16">
+              <button class="main-btn" id="btn-close-help">Fechar</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="login-overlay" class="overlay global-overlay">
+          <div class="overlay-card fade-in">
+            <h2 id="login-title">Entrar</h2>
+
+            <div class="auth-form">
+              <input id="login-email" type="email" placeholder="Email" />
+              <input id="login-password" type="password" placeholder="Senha" />
+            </div>
+
+            <div class="overlay-actions mt-16">
+              <button class="main-btn" id="btn-login">Entrar</button>
+              <button class="ghost-btn" id="btn-close-login">Fechar</button>
+            </div>
+
+            <p id="login-status" class="overlay-note"></p>
+          </div>
+        </div>
+
+        <div id="signup-overlay" class="overlay global-overlay">
+          <div class="overlay-card fade-in">
+            <h2 id="signup-title">Criar conta</h2>
+
+            <div class="auth-form">
+              <input id="signup-nickname" type="text" maxlength="6" placeholder="Apelido" />
+              <input id="signup-email" type="email" placeholder="Email" />
+              <input id="signup-password" type="password" placeholder="Senha" />
+            </div>
+
+            <div class="overlay-actions mt-16">
+              <button class="main-btn" id="btn-signup">Criar conta</button>
+              <button class="ghost-btn" id="btn-close-signup">Fechar</button>
+            </div>
+
+            <p id="signup-status" class="overlay-note"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="script.js"></script>
+</body>
+</html>
