@@ -1504,12 +1504,30 @@ function bindEvents() {
     });
   });
 
-  canvas.addEventListener("click", (e) => rotatePieceAt(e.clientX, e.clientY));
-  canvas.addEventListener("touchstart", (e) => {
-    const touch = e.touches[0];
-    if (!touch) return;
-    rotatePieceAt(touch.clientX, touch.clientY);
-  }, { passive: true });
+  let lastTouchTime = 0;
+
+  function handleCanvasInput(clientX, clientY) {
+    rotatePieceAt(clientX, clientY);
+  }
+
+  canvas.addEventListener(
+    "touchstart",
+    (e) => {
+      e.preventDefault();
+
+      const touch = e.changedTouches && e.changedTouches[0];
+      if (!touch) return;
+
+      lastTouchTime = Date.now();
+      handleCanvasInput(touch.clientX, touch.clientY);
+    },
+    { passive: false }
+  );
+
+  canvas.addEventListener("click", (e) => {
+    if (Date.now() - lastTouchTime < 500) return;
+    handleCanvasInput(e.clientX, e.clientY);
+  });
 
   window.addEventListener("resize", () => {
     if (state.isGameStarted) {
