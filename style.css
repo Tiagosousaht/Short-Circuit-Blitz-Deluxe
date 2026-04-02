@@ -527,7 +527,10 @@ canvas {
   aspect-ratio: 1 / 1;
   display: block;
   cursor: pointer;
-  touch-action: manipulation;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .bottom-tip {
